@@ -58,7 +58,7 @@ const {
       <div>
         <a 
           href="/#explore" 
-          class="h-8 inline-flex items-center bg-accent text-on-primary text-body-sm-strong rounded-sm px-4 hover:bg-accent-deep active:scale-95 transition-all"
+          class="h-8 inline-flex items-center bg-accent text-on-primary text-body-sm-strong rounded-sm px-4 hover:bg-accent-deep active:scale-95 transition-all btn-glow"
         >
           Explore
         </a>
@@ -71,11 +71,11 @@ const {
     </main>
 
     <!-- Toast Notifications Container -->
-    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4"></div>
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-[24rem] w-full px-4"></div>
 
     <!-- Footer -->
     <footer class="bg-canvas border-t border-hairline py-16 px-6 md:px-12">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+      <div class="max-w-[80rem] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
         
         <!-- Branding / Links -->
         <div class="col-span-1 md:col-span-4 flex flex-col gap-4">
@@ -85,7 +85,7 @@ const {
               Real Fun AI
             </span>
           </div>
-          <p class="text-body text-body-sm max-w-xs">
+          <p class="text-body text-body-sm">
             Interactive visualisations, games, and rankings exploring the speed, cost, and timeline of artificial intelligence.
           </p>
           <div class="flex gap-4 mt-2">
@@ -137,7 +137,7 @@ const {
             />
             <button 
               type="submit" 
-              class="bg-accent text-on-primary font-semibold text-body-sm rounded-sm px-4 h-10 hover:bg-accent-deep active:scale-95 transition-all"
+              class="bg-accent text-on-primary font-semibold text-body-sm rounded-sm px-4 h-10 hover:bg-accent-deep active:scale-95 transition-all btn-glow"
             >
               Subscribe
             </button>
@@ -146,7 +146,7 @@ const {
 
       </div>
 
-      <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-hairline flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="max-w-[80rem] mx-auto mt-12 pt-8 border-t border-hairline flex flex-col md:flex-row items-center justify-between gap-4">
         <p class="text-mute text-caption">
           &copy; {new Date().getFullYear()} Real Fun AI. All rights reserved. Not affiliated with neal.fun.
         </p>
@@ -202,6 +202,24 @@ const {
             input.value = "";
           }
         }
+      });
+
+      // Intersection Observer for fade-up scroll animation
+      document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+          observer.observe(el);
+        });
       });
     </script>
   </body>

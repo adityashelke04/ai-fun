@@ -257,3 +257,34 @@ html, body {
   animation: mesh-pulse 22s infinite alternate ease-in-out;
   animation-delay: -10s;
 }
+
+/* Smooth Fade-Up Scroll Animation */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Button Glow Pulse Hover Keyframes */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px var(--color-accent-soft);
+  }
+  50% {
+    box-shadow: 0 0 16px var(--color-accent);
+  }
+}
+
+.btn-glow {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-glow:hover {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+

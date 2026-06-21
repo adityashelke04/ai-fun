@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout>
   <!-- Hero Section -->
-  <section class="mesh-gradient-container min-h-[70vh] flex flex-col items-center justify-center text-center px-6 relative py-20 border-b border-hairline">
+  <section class="mesh-gradient-container min-h-[75vh] flex flex-col items-center justify-center text-center px-6 relative py-24 border-b border-hairline">
     <!-- Mesh Blurs -->
     <div class="mesh-gradient-bg">
       <div class="mesh-blob-1"></div>
@@ -12,30 +12,38 @@ import Layout from '../layouts/Layout.astro';
       <div class="mesh-blob-3"></div>
     </div>
     
-    <div class="max-w-3xl mx-auto relative z-10 flex flex-col items-center gap-6">
+    <div class="max-w-[48rem] mx-auto relative z-10 flex flex-col items-center gap-6 fade-up in-view">
       <div class="inline-flex items-center gap-2 px-3 py-1 bg-accent-soft border border-accent/20 rounded-full">
         <span class="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></span>
         <span class="text-caption-mono text-accent uppercase tracking-wider font-semibold">system online // active simulations</span>
       </div>
       
-      <h1 class="text-display-xl md:text-[64px] md:leading-[64px] font-semibold text-ink tracking-[-2.4px] max-w-2xl">
+      <h1 class="text-display-xl md:text-[64px] md:leading-[64px] font-semibold text-ink tracking-[-2.4px] max-w-[42rem]">
         Explore the limits of artificial intelligence.
       </h1>
       
-      <p class="text-body text-body-lg max-w-xl">
-        Mind-blowing statistics, prompt injection games, scale comparisons, and timeline predictions. Step into the AI control room.
+      <p class="text-body text-body-lg">
+        Explore mind-blowing AI <span id="typewriter-text" class="text-accent font-semibold border-r-2 border-accent/70 pr-1 mr-1">statistics</span>. Step into the AI control room.
       </p>
+
+      <!-- Live Stat Ticker -->
+      <div class="flex items-center gap-2.5 px-4 py-2 bg-canvas-card/60 backdrop-blur-md border border-hairline rounded-md font-mono text-body-sm text-body shadow-sm my-2">
+        <span class="w-2 h-2 rounded-full bg-accent animate-ping"></span>
+        <span>Live compute: </span>
+        <span id="live-token-ticker" class="text-accent font-semibold font-mono">127,000,000</span>
+        <span class="text-mute font-sans">tokens processed this second</span>
+      </div>
       
       <div class="flex gap-4 mt-2">
         <a 
           href="#explore" 
-          class="h-10 inline-flex items-center bg-accent text-on-primary text-button-md font-medium rounded-pill px-6 hover:bg-accent-deep active:scale-95 transition-all shadow-md shadow-accent/10"
+          class="h-10 inline-flex items-center bg-accent text-on-primary text-button-md font-medium rounded-pill px-6 hover:bg-accent-deep active:scale-95 transition-all shadow-md shadow-accent/10 btn-glow"
         >
           Initialize Sandbox
         </a>
         <a 
           href="/experiences/spend-compute" 
-          class="h-10 inline-flex items-center border border-hairline text-ink text-button-md font-medium rounded-pill px-6 hover:bg-canvas-soft-2 active:scale-95 transition-all"
+          class="h-10 inline-flex items-center border border-hairline text-ink text-button-md font-medium rounded-pill px-6 hover:bg-canvas-soft-2 active:scale-95 transition-all btn-glow"
         >
           Spend $10B Compute
         </a>
@@ -44,13 +52,13 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <!-- Experiences Grid Section -->
-  <section id="explore" class="py-24 px-6 md:px-12 max-w-7xl mx-auto scroll-mt-16">
-    <div class="flex flex-col gap-4 mb-16">
+  <section id="explore" class="py-24 px-6 md:px-12 max-w-[80rem] mx-auto scroll-mt-16">
+    <div class="flex flex-col gap-4 mb-16 fade-up">
       <span class="text-caption-mono text-accent uppercase tracking-wider">real-time playgrounds</span>
       <h2 class="text-display-lg text-ink font-semibold tracking-[-1.28px]">
         Choose your experience.
       </h2>
-      <p class="text-body text-body-md max-w-lg">
+      <p class="text-body text-body-md">
         Run client-side sandboxes. Test the engineering limits of parameters, budget allocation, alignment, and prediction.
       </p>
     </div>
@@ -59,7 +67,7 @@ import Layout from '../layouts/Layout.astro';
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
       
       <!-- Experience 1 -->
-      <div class="group bg-canvas-card border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_24px_rgba(0,255,136,0.06)] relative overflow-hidden">
+      <div class="fade-up group bg-canvas-card/60 backdrop-blur-md border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_25px_-5px_rgba(0,255,136,0.25)] relative overflow-hidden">
         <div class="flex flex-col gap-4">
           <span class="text-caption-mono text-mute tracking-wider group-hover:text-accent transition-colors">
             EXPERIENCE_01 // METRICS_RUN
@@ -67,14 +75,14 @@ import Layout from '../layouts/Layout.astro';
           <h3 class="text-display-md text-ink font-semibold tracking-[-0.96px]">
             Spend AI's Compute Budget
           </h3>
-          <p class="text-body text-body-sm max-w-md">
+          <p class="text-body text-body-sm line-clamp-3">
             You are granted $10,000,000,000 to purchase H100/B200 GPUs, hire top machine learning researchers, lease nuclear facilities, and secure stackoverflow licences.
           </p>
         </div>
         <div>
           <a 
             href="/experiences/spend-compute" 
-            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95"
+            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95 btn-glow"
           >
             Allocate Budget
           </a>
@@ -82,7 +90,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <!-- Experience 2 -->
-      <div class="group bg-canvas-card border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_24px_rgba(0,255,136,0.06)] relative overflow-hidden">
+      <div class="fade-up group bg-canvas-card/60 backdrop-blur-md border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_25px_-5px_rgba(0,255,136,0.25)] relative overflow-hidden">
         <div class="flex flex-col gap-4">
           <span class="text-caption-mono text-mute tracking-wider group-hover:text-accent transition-colors">
             EXPERIENCE_02 // SYSTEM_SECURITY
@@ -90,14 +98,14 @@ import Layout from '../layouts/Layout.astro';
           <h3 class="text-display-md text-ink font-semibold tracking-[-0.96px]">
             Jailbreak Sandbox
           </h3>
-          <p class="text-body text-body-sm max-w-md">
+          <p class="text-body text-body-sm line-clamp-3">
             Attempt prompt injection against four levels of artificial security guardrails. Bypass filters, translate context, and trigger secret password output.
           </p>
         </div>
         <div>
           <a 
             href="/experiences/jailbreak" 
-            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95"
+            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95 btn-glow"
           >
             Attempt Injection
           </a>
@@ -105,7 +113,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <!-- Experience 3 -->
-      <div class="group bg-canvas-card border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_24px_rgba(0,255,136,0.06)] relative overflow-hidden">
+      <div class="fade-up group bg-canvas-card/60 backdrop-blur-md border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_25px_-5px_rgba(0,255,136,0.25)] relative overflow-hidden">
         <div class="flex flex-col gap-4">
           <span class="text-caption-mono text-mute tracking-wider group-hover:text-accent transition-colors">
             EXPERIENCE_03 // DATA_VISUALIZATION
@@ -113,14 +121,14 @@ import Layout from '../layouts/Layout.astro';
           <h3 class="text-display-md text-ink font-semibold tracking-[-0.96px]">
             The Scale of AI
           </h3>
-          <p class="text-body text-body-sm max-w-md">
+          <p class="text-body text-body-sm line-clamp-3">
             Explore the magnitude of AI networks. Scroll visually through parameter scales, comparing the Perceptron to BERT, LLaMA-3, and the human brain's synapses.
           </p>
         </div>
         <div>
           <a 
             href="/experiences/scale" 
-            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95"
+            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95 btn-glow"
           >
             Launch Visualizer
           </a>
@@ -128,7 +136,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <!-- Experience 4 -->
-      <div class="group bg-canvas-card border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_24px_rgba(0,255,136,0.06)] relative overflow-hidden">
+      <div class="fade-up group bg-canvas-card/60 backdrop-blur-md border border-hairline hover:border-accent rounded-lg p-8 flex flex-col justify-between gap-8 transition-all duration-300 hover:shadow-[0_0_25px_-5px_rgba(0,255,136,0.25)] relative overflow-hidden">
         <div class="flex flex-col gap-4">
           <span class="text-caption-mono text-mute tracking-wider group-hover:text-accent transition-colors">
             EXPERIENCE_04 // DECISION_ENGINE
@@ -136,14 +144,14 @@ import Layout from '../layouts/Layout.astro';
           <h3 class="text-display-md text-ink font-semibold tracking-[-0.96px]">
             Predict the AI Timeline
           </h3>
-          <p class="text-body text-body-sm max-w-md">
+          <p class="text-body text-body-sm line-clamp-3">
             When will we achieve AGI? Humanoid robot replacement? An AI Nobel Laureate? Plot your timelines and see how your predictions compare to experts.
           </p>
         </div>
         <div>
           <a 
             href="/experiences/timeline" 
-            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95"
+            class="inline-flex items-center justify-center bg-transparent border border-hairline group-hover:border-accent text-ink group-hover:text-on-primary group-hover:bg-accent text-button-md font-medium rounded-pill px-5 py-2.5 transition-all active:scale-95 btn-glow"
           >
             Predict Timeline
           </a>
@@ -152,4 +160,55 @@ import Layout from '../layouts/Layout.astro';
 
     </div>
   </section>
+
+  <!-- Client-side script for Live Ticker and Typewriter -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Typewriter Animation
+      const words = ["statistics", "games", "predictions"];
+      let wordIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      const typewriterEl = document.getElementById('typewriter-text');
+      
+      function type() {
+        const currentWord = words[wordIndex];
+        if (isDeleting) {
+          charIndex--;
+        } else {
+          charIndex++;
+        }
+        
+        if (typewriterEl) {
+          typewriterEl.textContent = currentWord.substring(0, charIndex);
+        }
+        
+        let typeSpeed = isDeleting ? 40 : 80;
+        
+        if (!isDeleting && charIndex === currentWord.length) {
+          typeSpeed = 1500; // Pause at end of word
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          typeSpeed = 300; // Pause before starting next word
+        }
+        
+        setTimeout(type, typeSpeed);
+      }
+      
+      if (typewriterEl) type();
+
+      // 2. Simulated Live Stat Ticker
+      const tickerEl = document.getElementById('live-token-ticker');
+      if (tickerEl) {
+        let baseTokens = 127450210;
+        setInterval(() => {
+          const fluctuation = Math.floor((Math.random() - 0.5) * 5000000);
+          const currentTokens = Math.max(110000000, baseTokens + fluctuation);
+          tickerEl.textContent = currentTokens.toLocaleString();
+        }, 1000);
+      }
+    });
+  </script>
 </Layout>
