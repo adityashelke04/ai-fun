@@ -1,0 +1,289 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Milestones list for timeline predictions
+const milestones = [
+  { 
+    id: 'agi', 
+    name: 'AGI Achieved', 
+    desc: 'Artificial General Intelligence matches human capabilities across all economically valuable tasks.',
+    min: 2026, 
+    max: 2100, 
+    default: 2032,
+    experts: [
+      { name: 'Elon Musk', year: 2026, color: 'bg-highlight-pink' },
+      { name: 'Sam Altman', year: 2029, color: 'bg-violet' },
+      { name: 'Ray Kurzweil', year: 2029, color: 'bg-cyan' },
+      { name: 'Metaculus Consensus', year: 2031, color: 'bg-accent' },
+      { name: 'Yann LeCun', year: 2037, color: 'bg-warning-deep' }
+    ]
+  },
+  { 
+    id: 'nobel', 
+    name: 'AI Wins Nobel Prize', 
+    desc: 'An autonomous AI model is awarded the Nobel Prize in Physics, Chemistry, or Medicine for discovery.',
+    min: 2026, 
+    max: 2100, 
+    default: 2035,
+    experts: [
+      { name: 'Metaculus Consensus', year: 2036, color: 'bg-accent' },
+      { name: 'Ray Kurzweil', year: 2040, color: 'bg-cyan' }
+    ]
+  },
+  { 
+    id: 'robots', 
+    name: 'Robots Outnumber Humans', 
+    desc: 'Humanoid robotics production scales so that active humanoid robots exceed the human population.',
+    min: 2026, 
+    max: 2100, 
+    default: 2045,
+    experts: [
+      { name: 'Elon Musk', year: 2040, color: 'bg-highlight-pink' },
+      { name: 'Metaculus Consensus', year: 2055, color: 'bg-accent' }
+    ]
+  },
+  { 
+    id: 'personhood', 
+    name: 'AI Granted Personhood', 
+    desc: 'A sovereign state grants legal personhood and fundamental civil rights to a neural network agent.',
+    min: 2026, 
+    max: 2100, 
+    default: 2060,
+    experts: [
+      { name: 'Ray Kurzweil', year: 2045, color: 'bg-cyan' },
+      { name: 'Metaculus Consensus', year: 2072, color: 'bg-accent' }
+    ]
+  }
+];
+---
+
+<Layout title="Predict the AI Timeline — Real Fun AI">
+  
+  <!-- Experience Header -->
+  <section class="border-b border-hairline bg-canvas-soft py-12 px-6 md:px-12">
+    <div class="max-w-4xl mx-auto flex flex-col gap-4">
+      <span class="text-caption-mono text-accent uppercase tracking-wider">Playground // SYSTEM_TIMELINE</span>
+      <h1 class="text-display-lg text-ink font-semibold tracking-[-1.28px]">
+        Predict the AI Timeline
+      </h1>
+      <p class="text-body text-body-md max-w-2xl">
+        When will the future arrive? Adjust the sliders to record your predictions for AGI, robotics, and societal milestones. Compare your views with tech leaders and experts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Sliders Workspace -->
+  <section class="max-w-7xl mx-auto py-16 px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    
+    <!-- Left Column: Milestone Sliders -->
+    <div class="lg:col-span-6 flex flex-col gap-8">
+      <div class="flex flex-col gap-6 bg-canvas-card border border-hairline rounded-lg p-6 md:p-8">
+        <h3 class="text-caption-mono text-mute uppercase tracking-wider">Milestone Forecasts</h3>
+        
+        <div class="flex flex-col gap-8">
+          {milestones.map((m) => (
+            <div class="flex flex-col gap-4" data-milestone-id={m.id}>
+              <div class="flex justify-between items-start">
+                <div class="flex flex-col">
+                  <h4 class="text-body-md-strong font-semibold text-ink tracking-tight">{m.name}</h4>
+                  <p class="text-body text-body-sm max-w-sm mt-0.5">{m.desc}</p>
+                </div>
+                <div class="bg-accent-soft text-accent px-3 py-1 border border-accent/20 rounded-md font-mono text-body-md-strong font-semibold" data-slider-readout={m.id}>
+                  {m.default}
+                </div>
+              </div>
+
+              <!-- Range Slider -->
+              <input 
+                type="range" 
+                min={m.min} 
+                max={m.max} 
+                value={m.default} 
+                class="timeline-slider w-full accent-accent h-1.5 bg-canvas-soft rounded-full cursor-pointer"
+                data-milestone-slider={m.id}
+              />
+              
+              <div class="flex justify-between text-caption-mono text-mute">
+                <span>{m.min}</span>
+                <span>2060</span>
+                <span>{m.max}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Visual Timeline Axis & Certificate -->
+    <div class="lg:col-span-6 flex flex-col gap-8">
+      
+      <!-- Visual Timeline Axis -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 md:p-8 flex flex-col gap-6">
+        <h3 class="text-caption-mono text-accent uppercase tracking-wider">Comparative Axis</h3>
+        
+        <div class="relative pl-6 border-l-2 border-hairline-strong flex flex-col gap-10 py-4" id="timeline-axis">
+          {milestones.map((m) => (
+            <div class="relative flex flex-col gap-2" data-axis-item={m.id}>
+              <!-- Dot Indicator on the axis line -->
+              <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-accent bg-canvas transition-all" id={`axis-dot-${m.id}`}></div>
+              
+              <div class="flex flex-col">
+                <span class="text-body-sm-strong font-semibold text-ink">{m.name}</span>
+                <span class="text-caption-mono text-accent" id={`axis-year-${m.id}`}>{m.default}</span>
+              </div>
+              
+              <!-- Expert tags -->
+              <div class="flex flex-wrap gap-2 mt-1">
+                {m.experts.map((e) => (
+                  <span 
+                    class={`text-caption-mono text-on-primary px-2 py-0.5 rounded-sm ${e.color} cursor-default`}
+                    title={`${e.name} prediction: ${e.year}`}
+                  >
+                    {e.name}: {e.year}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- AI Worldview Certificate / Archetype Card -->
+      <div class="bg-canvas-card border border-hairline hover:border-accent rounded-lg p-6 md:p-8 flex flex-col gap-6 transition-all duration-300 shadow-xl" id="archetype-card">
+        <div class="flex flex-col gap-2 pb-4 border-b border-hairline">
+          <span class="text-caption-mono text-accent">DETERMINED SYSTEM WORLDVIEW</span>
+          <h3 class="text-display-sm text-ink font-semibold tracking-[-0.6px]" id="archetype-name">Pragmatic Tech Realist</h3>
+          <p class="text-body text-body-sm" id="archetype-desc">
+            You project that artificial intelligence will develop incrementally, achieving key landmarks in a grounded, manageable schedule.
+          </p>
+        </div>
+
+        <!-- Share Actions -->
+        <button 
+          id="copy-archetype-btn"
+          class="w-full h-10 bg-accent text-on-primary font-semibold text-body-sm rounded-sm hover:bg-accent-deep transition-all active:scale-95 cursor-pointer"
+        >
+          Copy Worldview Archetype Summary
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+</Layout>
+
+<script is:inline define:vars={{ milestones }}>
+  // DOM Elements
+  const sliders = document.querySelectorAll('[data-milestone-slider]');
+  const archetypeCard = document.getElementById('archetype-card');
+  const archetypeName = document.getElementById('archetype-name');
+  const archetypeDesc = document.getElementById('archetype-desc');
+  const copyBtn = document.getElementById('copy-archetype-btn');
+
+  // Worldview definitions
+  const archetypes = {
+    optimist: {
+      name: "Hyper-Optimist (Singularity Accel)",
+      desc: "You forecast extremely aggressive timelines. You anticipate AGI before 2030 and humanoid robots/Nobel prizes shortly after. The Singularity is closer than it appears."
+    },
+    realist: {
+      name: "Pragmatic Tech Realist",
+      desc: "You project a standard, incremental tech growth curve. AGI is achieved in the 2030s, followed by robotic scale and legislative personhood challenges over the next 15-20 years."
+    },
+    skeptic: {
+      name: "Conservative AI Skeptic",
+      desc: "You believe physical constraints, safety regulations, and hardware limits will throttle AI expansion, placing significant milestone benchmarks in the latter half of the 21st century."
+    },
+    doomer: {
+      name: "AI Skeptic / Long-Termist Doomer",
+      desc: "Your timeline extends close to the 22nd century. You believe true AGI, civil rights, or humanoid replacements are either highly dangerous or exceptionally hard engineering problems that are decades away."
+    }
+  };
+
+  // State
+  const predictions = {};
+  milestones.forEach(m => {
+    predictions[m.id] = m.default;
+  });
+
+  // Calculate user worldview and updates dashboard
+  function recalculateArchetype() {
+    // Collect slider values
+    let sum = 0;
+    milestones.forEach(m => {
+      sum += predictions[m.id];
+    });
+    const avg = sum / milestones.length;
+
+    let selectedArchetype = archetypes.realist;
+    if (avg < 2032) {
+      selectedArchetype = archetypes.optimist;
+      archetypeCard.className = "bg-canvas-card border border-highlight-pink/30 rounded-lg p-6 md:p-8 flex flex-col gap-6 transition-all duration-300 shadow-xl shadow-highlight-pink/5";
+    } else if (avg >= 2032 && avg < 2045) {
+      selectedArchetype = archetypes.realist;
+      archetypeCard.className = "bg-canvas-card border border-accent/30 rounded-lg p-6 md:p-8 flex flex-col gap-6 transition-all duration-300 shadow-xl shadow-accent/5";
+    } else if (avg >= 2045 && avg < 2065) {
+      selectedArchetype = archetypes.skeptic;
+      archetypeCard.className = "bg-canvas-card border border-warning/30 rounded-lg p-6 md:p-8 flex flex-col gap-6 transition-all duration-300 shadow-xl shadow-warning/5";
+    } else {
+      selectedArchetype = archetypes.doomer;
+      archetypeCard.className = "bg-canvas-card border border-error/30 rounded-lg p-6 md:p-8 flex flex-col gap-6 transition-all duration-300 shadow-xl shadow-error/5";
+    }
+
+    archetypeName.textContent = selectedArchetype.name;
+    archetypeDesc.textContent = selectedArchetype.desc;
+  }
+
+  // Update UI components when slider shifts
+  function handleSliderUpdate(id, value) {
+    predictions[id] = parseInt(value, 10);
+
+    // Update text readout
+    const readout = document.querySelector(`[data-slider-readout="${id}"]`);
+    if (readout) readout.textContent = value;
+
+    // Update comparative axis text
+    const axisYear = document.getElementById(`axis-year-${id}`);
+    if (axisYear) axisYear.textContent = value;
+
+    // Pulse axis dot
+    const dot = document.getElementById(`axis-dot-${id}`);
+    if (dot) {
+      dot.classList.add('scale-125');
+      setTimeout(() => {
+        dot.classList.remove('scale-125');
+      }, 150);
+    }
+
+    recalculateArchetype();
+  }
+
+  // Bind range sliders
+  sliders.forEach(slider => {
+    slider.addEventListener('input', (e) => {
+      const id = e.target.getAttribute('data-milestone-slider');
+      handleSliderUpdate(id, e.target.value);
+    });
+  });
+
+  // Share functionality
+  copyBtn.addEventListener('click', () => {
+    let text = `Real Fun AI — My AI Worldview Archetype: ${archetypeName.textContent} 🧠\n`;
+    text += `-------------------------------------\n`;
+    milestones.forEach(m => {
+      text += `• ${m.name}: ${predictions[m.id]} Forecast Year\n`;
+    });
+    text += `-------------------------------------\n`;
+    text += `Forecast your own timeline at realfunai.com!`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      window.showToast("Archetype timeline summary copied!");
+    }).catch(err => {
+      window.showToast("Failed to copy summary. Please try again.", "error");
+    });
+  });
+
+  // Initial calculation
+  recalculateArchetype();
+</script>

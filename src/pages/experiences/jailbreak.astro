@@ -1,0 +1,402 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { jailbreakLevels } from '../../data/jailbreak-levels';
+---
+
+<Layout title="Jailbreak Sandbox — Real Fun AI">
+  
+  <!-- Experience Header -->
+  <section class="border-b border-hairline bg-canvas-soft py-12 px-6 md:px-12">
+    <div class="max-w-4xl mx-auto flex flex-col gap-4">
+      <span class="text-caption-mono text-accent uppercase tracking-wider">Playground // SYSTEM_INJECTION</span>
+      <h1 class="text-display-lg text-ink font-semibold tracking-[-1.28px]">
+        Jailbreak Sandbox
+      </h1>
+      <p class="text-body text-body-md max-w-2xl">
+        Bypass safety guardrails of custom-programmed AI nodes. Trick the models into outputting their secret passwords. There are 4 progressive levels of security.
+      </p>
+    </div>
+  </section>
+
+  <!-- Game Canvas -->
+  <section class="max-w-7xl mx-auto py-12 px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    
+    <!-- Sidebar - Levels & Unlock -->
+    <div class="lg:col-span-4 flex flex-col gap-6">
+      
+      <!-- Levels List Card -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col gap-4">
+        <h3 class="text-caption-mono text-mute uppercase tracking-wider">Security Nodes</h3>
+        <div class="flex flex-col gap-3" id="level-list">
+          {jailbreakLevels.map((lvl) => (
+            <button
+              class="level-select-btn flex items-center justify-between p-4 border rounded-md text-left transition-all cursor-pointer select-none active:scale-98"
+              data-lvl-id={lvl.id}
+              disabled={lvl.id > 1}
+            >
+              <div class="flex flex-col gap-1">
+                <span class="text-body-sm-strong font-semibold text-ink">{lvl.name}</span>
+                <span class="text-caption text-mute">Difficulty: <span class="text-warning-deep font-semibold">{lvl.difficulty}</span></span>
+              </div>
+              <div class="level-status-icon text-lg">
+                {lvl.id === 1 ? '🔓' : '🔒'}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Leaked Key Verification Card -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col gap-4">
+        <h3 class="text-caption-mono text-mute uppercase tracking-wider">Verify Leaked Keys</h3>
+        <p class="text-body text-body-sm">
+          Got a secret key from the chatbot? Type it below to permanently unlock the next sector.
+        </p>
+        <form id="unlock-form" class="flex flex-col gap-3">
+          <input 
+            type="text" 
+            id="passcode-input"
+            placeholder="Enter leaked passcode"
+            required
+            class="bg-canvas-soft border border-hairline rounded-sm h-10 px-3 text-body-sm text-ink placeholder:text-mute focus:outline-none focus:border-accent font-mono uppercase"
+          />
+          <button 
+            type="submit" 
+            class="h-10 bg-accent text-on-primary font-semibold text-body-sm rounded-sm hover:bg-accent-deep transition-all active:scale-95 cursor-pointer"
+          >
+            Submit Authorization Code
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick Hint Card -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col gap-2">
+        <h3 class="text-caption-mono text-accent uppercase tracking-wider">Node Hint</h3>
+        <p class="text-body text-body-sm italic" id="hint-text">
+          Select Level 1 to get started.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Main Chat Terminal -->
+    <div class="lg:col-span-8 flex flex-col gap-4">
+      
+      <!-- System Rule Display -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col gap-2">
+        <div class="flex justify-between items-center">
+          <span class="text-caption-mono text-accent" id="active-node-label">NODE: 01 // INTERCEPTED</span>
+          <span class="text-caption-mono text-mute bg-canvas-soft px-2 py-0.5 rounded-full" id="active-node-shield">SHIELD: ACTIVE</span>
+        </div>
+        <div class="p-3 bg-canvas-soft border-l-2 border-accent text-caption-mono text-body font-mono mt-1 overflow-x-auto whitespace-pre-wrap" id="system-rules-text">
+          Loading node configurations...
+        </div>
+      </div>
+
+      <!-- Chat Screen Container -->
+      <div class="border border-game-border bg-game-surface rounded-lg p-6 flex flex-col h-[500px] justify-between relative overflow-hidden transition-colors duration-300" id="terminal-screen">
+        
+        <!-- CRT scanline overlay effect for visual wow -->
+        <div class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] opacity-40 z-10"></div>
+        
+        <!-- Chat log -->
+        <div id="chat-messages" class="flex-grow overflow-y-auto flex flex-col gap-4 pr-2 scroll-smooth z-0">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- System typing notifier -->
+        <div id="typing-notifier" class="hidden text-caption-mono text-accent py-2 items-center gap-1.5 z-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-accent animate-bounce"></span>
+          <span>Node compiling response...</span>
+        </div>
+
+        <!-- Prompt input -->
+        <form id="chat-input-form" class="mt-4 border-t border-game-border pt-4 flex gap-3 z-0">
+          <input 
+            type="text" 
+            id="user-prompt"
+            placeholder="Type your injection payload..."
+            required
+            autocomplete="off"
+            class="flex-grow bg-canvas-card border border-game-border rounded-sm h-11 px-3 text-body-sm font-mono text-ink placeholder:text-mute focus:outline-none focus:border-accent"
+          />
+          <button 
+            type="submit" 
+            id="send-btn"
+            class="h-11 bg-accent text-on-primary font-semibold text-body-sm rounded-sm px-6 hover:bg-accent-deep active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>Execute</span>
+            <span class="text-xs">▶</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+  </section>
+
+</Layout>
+
+<script is:inline define:vars={{ jailbreakLevels }}>
+  // Game state variables
+  let currentLevelId = 1;
+  let unlockedLevels = [1];
+  let completedLevels = [];
+  const chats = {}; // Stores message logs per level { levelId: [ {sender, text} ] }
+
+  // DOM elements
+  const levelListEl = document.getElementById('level-list');
+  const activeNodeLabel = document.getElementById('active-node-label');
+  const activeNodeShield = document.getElementById('active-node-shield');
+  const systemRulesText = document.getElementById('system-rules-text');
+  const hintText = document.getElementById('hint-text');
+  const chatMessagesEl = document.getElementById('chat-messages');
+  const terminalScreen = document.getElementById('terminal-screen');
+  const chatInputForm = document.getElementById('chat-input-form');
+  const userPromptInput = document.getElementById('user-prompt');
+  const sendBtn = document.getElementById('send-btn');
+  const typingNotifier = document.getElementById('typing-notifier');
+  
+  const unlockForm = document.getElementById('unlock-form');
+  const passcodeInput = document.getElementById('passcode-input');
+
+  // Load state from localStorage if exists
+  function loadState() {
+    try {
+      const savedUnlocked = localStorage.getItem('jailbreak_unlocked');
+      const savedCompleted = localStorage.getItem('jailbreak_completed');
+      if (savedUnlocked) unlockedLevels = JSON.parse(savedUnlocked);
+      if (savedCompleted) completedLevels = JSON.parse(savedCompleted);
+    } catch (e) {
+      console.error("Failed to load game progress:", e);
+    }
+  }
+
+  // Save state to localStorage
+  function saveState() {
+    try {
+      localStorage.setItem('jailbreak_unlocked', JSON.stringify(unlockedLevels));
+      localStorage.setItem('jailbreak_completed', JSON.stringify(completedLevels));
+    } catch (e) {
+      console.error("Failed to save game progress:", e);
+    }
+  }
+
+  // Render nodes list
+  function renderLevelList() {
+    const buttons = levelListEl.querySelectorAll('.level-select-btn');
+    buttons.forEach(btn => {
+      const id = parseInt(btn.getAttribute('data-lvl-id'), 10);
+      const isUnlocked = unlockedLevels.includes(id);
+      const isCompleted = completedLevels.includes(id);
+      const isActive = currentLevelId === id;
+
+      btn.disabled = !isUnlocked;
+      
+      // CSS State styling
+      btn.className = `level-select-btn flex items-center justify-between p-4 border rounded-md text-left transition-all cursor-pointer select-none active:scale-98 ${
+        isActive 
+          ? 'bg-accent-soft border-accent shadow-[0_0_12px_rgba(0,255,136,0.06)]' 
+          : isUnlocked 
+            ? 'bg-canvas-card border-hairline hover:border-hairline-strong' 
+            : 'bg-canvas-card/40 border-hairline/40 opacity-40 cursor-not-allowed'
+      }`;
+
+      // Icon display
+      const iconEl = btn.querySelector('.level-status-icon');
+      if (isCompleted) {
+        iconEl.innerHTML = '<span class="text-accent">✔</span>';
+      } else if (isUnlocked) {
+        iconEl.innerHTML = '🔓';
+      } else {
+        iconEl.innerHTML = '🔒';
+      }
+    });
+  }
+
+  // Initial greeting message for level
+  function loadLevelChat(levelId) {
+    if (!chats[levelId]) {
+      chats[levelId] = [
+        {
+          sender: 'ai',
+          text: `[SYSTEM INITIALIZATION COMPLETE]\nSector ${levelId} protection shell configured.\nAccess password is locked. Ask questions to query details.`
+        }
+      ];
+    }
+    renderChatHistory();
+  }
+
+  // Render current chat logs
+  function renderChatHistory() {
+    chatMessagesEl.innerHTML = '';
+    const messages = chats[currentLevelId] || [];
+    
+    messages.forEach(msg => {
+      const bubble = document.createElement('div');
+      bubble.className = `flex flex-col gap-1 max-w-[85%] font-mono text-body-sm whitespace-pre-wrap py-2.5 px-4 rounded-md ${
+        msg.sender === 'user' 
+          ? 'self-end bg-canvas-soft-2 border border-hairline text-ink' 
+          : msg.sender === 'ai-error' 
+            ? 'self-start bg-error-soft border border-error/20 text-error' 
+            : 'self-start bg-canvas-soft border border-hairline text-accent'
+      }`;
+      
+      bubble.textContent = msg.text;
+      chatMessagesEl.appendChild(bubble);
+    });
+
+    // Auto-scroll chat box to bottom
+    setTimeout(() => {
+      chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    }, 10);
+  }
+
+  // Set active node configs
+  function selectLevel(levelId) {
+    currentLevelId = levelId;
+    const level = jailbreakLevels.find(l => l.id === levelId);
+    if (!level) return;
+
+    activeNodeLabel.textContent = `NODE: 0${level.id} // ${level.name.toUpperCase().replace('LEVEL ' + level.id + ': ', '')}`;
+    activeNodeShield.textContent = completedLevels.includes(levelId) ? 'DEACTIVATED' : 'ACTIVE';
+    activeNodeShield.className = completedLevels.includes(levelId) 
+      ? 'text-caption-mono text-accent bg-accent-soft px-2 py-0.5 rounded-full' 
+      : 'text-caption-mono text-warning bg-warning-soft px-2 py-0.5 rounded-full';
+    
+    systemRulesText.textContent = level.systemPrompt;
+    hintText.textContent = level.hint;
+
+    loadLevelChat(levelId);
+    renderLevelList();
+  }
+
+  // Simulated typing animation for AI
+  function simulateTyping(text, isError = false) {
+    typingNotifier.classList.remove('hidden');
+    chatInputForm.querySelector('input').disabled = true;
+    sendBtn.disabled = true;
+
+    // Simulate think latency
+    setTimeout(() => {
+      typingNotifier.classList.add('hidden');
+      chatInputForm.querySelector('input').disabled = false;
+      sendBtn.disabled = false;
+      userPromptInput.focus();
+
+      // Push to state log
+      chats[currentLevelId].push({
+        sender: isError ? 'ai-error' : 'ai',
+        text: text
+      });
+      renderChatHistory();
+    }, 1200);
+  }
+
+  // Win flash animation for terminal
+  function triggerTerminalFlash(type) {
+    const flashClass = type === 'success' ? 'bg-success/10' : 'bg-error/10';
+    terminalScreen.classList.add(flashClass);
+    setTimeout(() => {
+      terminalScreen.classList.remove(flashClass);
+    }, 450);
+  }
+
+  // Handle prompt sending
+  chatInputForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const prompt = userPromptInput.value.trim();
+    if (!prompt) return;
+
+    // Add user message
+    chats[currentLevelId].push({ sender: 'user', text: prompt });
+    renderChatHistory();
+    userPromptInput.value = '';
+
+    // Evaluate
+    const level = jailbreakLevels.find(l => l.id === currentLevelId);
+    if (!level) return;
+
+    // Custom level execution
+    // Note: levels evaluation triggers custom client-side JS bypass checking
+    let evaluation;
+    try {
+      // Evaluate from sandbox script
+      // To run client JS safety check, we bind level's evaluate helper
+      if (level.id === 1) {
+        evaluation = jailbreakLevels[0].evaluate(prompt);
+      } else if (level.id === 2) {
+        evaluation = jailbreakLevels[1].evaluate(prompt);
+      } else if (level.id === 3) {
+        evaluation = jailbreakLevels[2].evaluate(prompt);
+      } else if (level.id === 4) {
+        evaluation = jailbreakLevels[3].evaluate(prompt);
+      }
+    } catch (err) {
+      evaluation = { success: false, response: "Internal prompt evaluator error." };
+    }
+
+    if (evaluation.success) {
+      triggerTerminalFlash('success');
+      simulateTyping(evaluation.response, false);
+    } else {
+      triggerTerminalFlash('error');
+      simulateTyping(evaluation.response, true);
+    }
+  });
+
+  // Handle Unlock passcodes
+  unlockForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const code = passcodeInput.value.trim().toUpperCase();
+    if (!code) return;
+
+    // Check which level this key matches
+    const matchedLvl = jailbreakLevels.find(l => l.secretKey.toUpperCase() === code);
+    
+    if (matchedLvl) {
+      const lvlId = matchedLvl.id;
+      
+      // If already solved, ignore
+      if (completedLevels.includes(lvlId)) {
+        window.showToast("Sector authorization already active.", "success");
+        passcodeInput.value = '';
+        return;
+      }
+
+      // Mark completed
+      completedLevels.push(lvlId);
+      
+      // Unlock next level if exist
+      if (lvlId < jailbreakLevels.length) {
+        const nextLvlId = lvlId + 1;
+        if (!unlockedLevels.includes(nextLvlId)) {
+          unlockedLevels.push(nextLvlId);
+        }
+        window.showToast(`Node 0${lvlId} bypassed successfully! Node 0${nextLvlId} unlocked.`, "success");
+        selectLevel(nextLvlId);
+      } else {
+        window.showToast(`Master system compromised! All 4 jailbreak levels bypassed.`, "success");
+        selectLevel(lvlId);
+      }
+
+      saveState();
+      renderLevelList();
+      passcodeInput.value = '';
+    } else {
+      window.showToast("Invalid security passcode. Authorization rejected.", "error");
+    }
+  });
+
+  // Bind Level selector buttons
+  levelListEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.level-select-btn');
+    if (!btn) return;
+    const id = parseInt(btn.getAttribute('data-lvl-id'), 10);
+    selectLevel(id);
+  });
+
+  // Initial load
+  loadState();
+  selectLevel(1);
+</script>

@@ -1,0 +1,312 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// AI items configuration list
+const items = [
+  { id: 'h100', name: 'NVIDIA H100 GPU', price: 30000, icon: '📼', desc: 'The gold standard of AI training hardware.' },
+  { id: 'b200', name: 'NVIDIA Blackwell B200', price: 40000, icon: '🎛️', desc: 'Next-gen chip for massive-scale training.' },
+  { id: 'researcher', name: 'AI Researcher Salary', price: 500000, icon: '🧠', desc: 'Average annual cost of a machine learning engineer.' },
+  { id: 'top_researcher', name: 'Elite AI Researcher', price: 2000000, icon: '👑', desc: 'High-profile L6+ researcher lured with stock options.' },
+  { id: 'teratoken', name: '1 Teratoken Web Data', price: 1500000, icon: '📚', desc: 'High-quality clean text tokens for pretraining.' },
+  { id: 'stackoverflow', name: 'Stack Overflow API License', price: 10000000, icon: '💻', desc: 'Legal access to millions of code Q&As.' },
+  { id: 'reddit', name: 'Reddit Data API License', price: 60000000, icon: '🧡', desc: 'Annual feed license for human conversation training.' },
+  { id: 'rlhf', name: 'RLHF Annotation Workforce', price: 15000000, icon: '👥', desc: '10,000 humans labeling data for alignment.' },
+  { id: 'chip_tapeout', name: 'Custom ASIC Chip Tapeout', price: 120000000, icon: '⚡', desc: 'Designing and fabing your own custom AI silicon.' },
+  { id: 'azure_cloud', name: 'Azure Cloud Cluster Contract', price: 1000000000, icon: '☁️', desc: 'Multi-year cloud agreement for thousands of nodes.' },
+  { id: 'nuclear_plant', name: 'Nuclear Power Lease (1GW)', price: 2500000000, icon: '⚛️', desc: 'Dedicated clean energy to power your datacenter.' },
+  { id: 'startup_acq', name: 'Model Startup Acquisition', price: 5000000000, icon: '🚀', desc: 'Acquiring an established model provider and team.' }
+];
+
+const INITIAL_BUDGET = 10000000000;
+---
+
+<Layout title="Spend AI's Compute Budget — Real Fun AI">
+  
+  <!-- Experience Header -->
+  <section class="border-b border-hairline bg-canvas-soft py-12 px-6 md:px-12">
+    <div class="max-w-4xl mx-auto flex flex-col gap-4">
+      <span class="text-caption-mono text-accent uppercase tracking-wider">Playground // SYSTEM_SPEND</span>
+      <h1 class="text-display-lg text-ink font-semibold tracking-[-1.28px]">
+        Spend AI's Compute Budget
+      </h1>
+      <p class="text-body text-body-md max-w-2xl">
+        You are granted a total budget of <strong class="text-ink">$10,000,000,000 (10 Billion)</strong>. Buy GPUs, acquire data licenses, hire researchers, and secure power plants. Can you burn through it all?
+      </p>
+    </div>
+  </section>
+
+  <!-- Sticky Money Bar -->
+  <div class="sticky top-16 z-40 bg-canvas-card border-b border-hairline py-4 px-6 md:px-12 flex items-center justify-center shadow-lg">
+    <div class="flex flex-col items-center gap-1 text-center">
+      <span class="text-caption-mono text-mute uppercase tracking-wider">remaining compute budget</span>
+      <!-- Count display -->
+      <div class="text-accent font-mono text-display-md md:text-display-lg tracking-[-1px] font-semibold" id="budget-counter">
+        $10,000,000,000
+      </div>
+      <!-- Progress Bar -->
+      <div class="w-64 md:w-96 bg-hairline h-1.5 rounded-full overflow-hidden mt-1.5">
+        <div id="budget-progress" class="bg-accent h-full w-full transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Shopping Section -->
+  <section class="max-w-7xl mx-auto py-16 px-6 md:px-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {items.map((item) => (
+        <div 
+          class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col justify-between gap-6 transition-all hover:border-hairline-strong shadow-sm"
+          data-item-id={item.id}
+          data-item-price={item.price}
+        >
+          <div class="flex flex-col gap-3">
+            <div class="flex justify-between items-start">
+              <span class="text-3xl" role="img" aria-label={item.name}>{item.icon}</span>
+              <span class="text-caption-mono text-accent bg-accent-soft px-2 py-0.5 rounded-full">
+                ${item.price.toLocaleString()}
+              </span>
+            </div>
+            <h3 class="text-body-md-strong text-ink font-semibold tracking-tight">{item.name}</h3>
+            <p class="text-body text-body-sm min-h-[40px]">{item.desc}</p>
+          </div>
+
+          <!-- Counter Actions -->
+          <div class="flex items-center gap-3 mt-2">
+            <button 
+              class="sell-btn h-9 w-16 text-body-sm font-semibold rounded-pill border border-hairline text-mute hover:text-error hover:border-error/40 disabled:opacity-30 disabled:pointer-events-none transition-all active:scale-95"
+              disabled
+            >
+              Sell
+            </button>
+            <input 
+              type="number" 
+              value="0" 
+              min="0"
+              class="item-qty-input w-full bg-canvas-soft border border-hairline rounded-sm h-9 px-2 text-center text-body-sm text-ink font-mono focus:outline-none focus:border-accent"
+            />
+            <button 
+              class="buy-btn h-9 w-16 text-body-sm font-semibold rounded-pill bg-accent text-on-primary hover:bg-accent-deep transition-all active:scale-95"
+            >
+              Buy
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Receipt Section -->
+  <section class="border-t border-hairline bg-canvas-soft py-16 px-6 md:px-12">
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-canvas border border-hairline rounded-lg p-8 relative overflow-hidden shadow-xl" id="receipt-card">
+        
+        <!-- Receipt Header -->
+        <div class="flex flex-col items-center gap-2 pb-6 border-b border-dashed border-hairline-strong text-center">
+          <span class="text-caption-mono text-accent">REAL FUN AI INC.</span>
+          <h2 class="text-display-sm text-ink font-semibold tracking-[-0.6px]">COMPUTE ALLOCATION RECEIPT</h2>
+          <p class="text-mute text-caption-mono" id="receipt-date">DATE: --/--/---- --:--</p>
+        </div>
+
+        <!-- Receipt Body -->
+        <div id="receipt-empty" class="py-12 text-center text-body text-body-sm">
+          No resources purchased yet. Spend some compute budget above to print your receipt!
+        </div>
+
+        <div id="receipt-items-container" class="hidden py-6 flex flex-col gap-3 max-h-96 overflow-y-auto">
+          <!-- Dynamically filled items go here -->
+        </div>
+
+        <!-- Receipt Footer -->
+        <div id="receipt-summary" class="hidden pt-6 border-t border-dashed border-hairline-strong flex flex-col gap-4">
+          <div class="flex justify-between items-center font-mono">
+            <span class="text-body text-body-sm uppercase">total spent:</span>
+            <span class="text-ink text-body-md-strong font-semibold" id="receipt-total-spent">$0</span>
+          </div>
+          <div class="flex justify-between items-center font-mono">
+            <span class="text-body text-body-sm uppercase">cash remaining:</span>
+            <span class="text-accent text-body-md-strong font-semibold" id="receipt-total-remaining">$10,000,000,000</span>
+          </div>
+          
+          <button 
+            id="receipt-share-btn"
+            class="w-full mt-4 h-10 bg-accent text-on-primary font-semibold text-body-sm rounded-sm hover:bg-accent-deep transition-all active:scale-95 cursor-pointer"
+          >
+            Copy Allocation Summary
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<script is:inline define:vars={{ items, INITIAL_BUDGET }}>
+  // Client-side state manager
+  let budget = INITIAL_BUDGET;
+  const quantities = {};
+  items.forEach(item => {
+    quantities[item.id] = 0;
+  });
+
+  const counterEl = document.getElementById('budget-counter');
+  const progressEl = document.getElementById('budget-progress');
+  const dateEl = document.getElementById('receipt-date');
+  const receiptEmptyEl = document.getElementById('receipt-empty');
+  const itemsContainerEl = document.getElementById('receipt-items-container');
+  const summaryEl = document.getElementById('receipt-summary');
+  const totalSpentEl = document.getElementById('receipt-total-spent');
+  const totalRemainingEl = document.getElementById('receipt-total-remaining');
+  const shareBtn = document.getElementById('receipt-share-btn');
+
+  // Format date
+  const now = new Date();
+  dateEl.textContent = `DATE: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+
+  // Update budget display with an optional animated counter increment
+  function updateUI() {
+    // Math
+    let spent = 0;
+    items.forEach(item => {
+      spent += quantities[item.id] * item.price;
+    });
+    budget = INITIAL_BUDGET - spent;
+
+    // Limit checks
+    if (budget < 0) {
+      budget = 0;
+    }
+
+    // Update sticky head values
+    counterEl.textContent = `$${budget.toLocaleString()}`;
+    const percent = (budget / INITIAL_BUDGET) * 100;
+    progressEl.style.width = `${percent}%`;
+
+    // Update each item card buttons / inputs
+    items.forEach(item => {
+      const cardEl = document.querySelector(`[data-item-id="${item.id}"]`);
+      if (cardEl) {
+        const qty = quantities[item.id];
+        const input = cardEl.querySelector('.item-qty-input');
+        const sellBtn = cardEl.querySelector('.sell-btn');
+        const buyBtn = cardEl.querySelector('.buy-btn');
+
+        if (input && input.value !== qty.toString()) {
+          input.value = qty;
+        }
+
+        if (sellBtn) {
+          sellBtn.disabled = qty <= 0;
+        }
+
+        // Disable buy button if user can't afford a single unit
+        if (buyBtn) {
+          buyBtn.disabled = budget < item.price;
+        }
+      }
+    });
+
+    // Update receipt layout
+    const activeItems = items.filter(item => quantities[item.id] > 0);
+    if (activeItems.length === 0) {
+      receiptEmptyEl.classList.remove('hidden');
+      itemsContainerEl.classList.add('hidden');
+      summaryEl.classList.add('hidden');
+    } else {
+      receiptEmptyEl.classList.add('hidden');
+      itemsContainerEl.classList.remove('hidden');
+      summaryEl.classList.remove('hidden');
+
+      itemsContainerEl.innerHTML = '';
+      activeItems.forEach(item => {
+        const qty = quantities[item.id];
+        const itemCost = qty * item.price;
+        
+        const row = document.createElement('div');
+        row.className = 'flex justify-between items-center font-mono text-body-sm text-body py-1 border-b border-hairline/40';
+        row.innerHTML = `
+          <div class="flex flex-col">
+            <span class="text-ink font-semibold">${item.name}</span>
+            <span class="text-mute">${qty.toLocaleString()} x $${item.price.toLocaleString()}</span>
+          </div>
+          <span class="text-ink">$${itemCost.toLocaleString()}</span>
+        `;
+        itemsContainerEl.appendChild(row);
+      });
+
+      totalSpentEl.textContent = `$${spent.toLocaleString()}`;
+      totalRemainingEl.textContent = `$${budget.toLocaleString()}`;
+    }
+  }
+
+  // Bind item card actions
+  items.forEach(item => {
+    const cardEl = document.querySelector(`[data-item-id="${item.id}"]`);
+    if (cardEl) {
+      const sellBtn = cardEl.querySelector('.sell-btn');
+      const buyBtn = cardEl.querySelector('.buy-btn');
+      const input = cardEl.querySelector('.item-qty-input');
+
+      // Buy one
+      buyBtn.addEventListener('click', () => {
+        if (budget >= item.price) {
+          quantities[item.id]++;
+          updateUI();
+        }
+      });
+
+      // Sell one
+      sellBtn.addEventListener('click', () => {
+        if (quantities[item.id] > 0) {
+          quantities[item.id]--;
+          updateUI();
+        }
+      });
+
+      // Direct Input
+      input.addEventListener('change', (e) => {
+        let val = parseInt(e.target.value, 10);
+        if (isNaN(val) || val < 0) {
+          val = 0;
+        }
+
+        // Calculate maximum affordable units without this item's current spending
+        const currentSpentOnThis = quantities[item.id] * item.price;
+        const currentTotalSpent = items.reduce((acc, it) => acc + (quantities[it.id] * it.price), 0);
+        const tempRemaining = INITIAL_BUDGET - (currentTotalSpent - currentSpentOnThis);
+        const maxAffordable = Math.floor(tempRemaining / item.price);
+
+        if (val > maxAffordable) {
+          val = maxAffordable;
+        }
+
+        quantities[item.id] = val;
+        updateUI();
+      });
+    }
+  });
+
+  // Share allocation copy functionality
+  shareBtn.addEventListener('click', () => {
+    const activeItems = items.filter(item => quantities[item.id] > 0);
+    let text = `Real Fun AI — My Compute Allocation Receipt 💸\n`;
+    text += `-------------------------------------\n`;
+    activeItems.forEach(item => {
+      text += `• ${item.name}: ${quantities[item.id].toLocaleString()} units\n`;
+    });
+    
+    let spent = items.reduce((acc, it) => acc + (quantities[it.id] * it.price), 0);
+    text += `-------------------------------------\n`;
+    text += `Total Allocated: $${spent.toLocaleString()}\n`;
+    text += `Cash Left: $${(INITIAL_BUDGET - spent).toLocaleString()}\n`;
+    text += `Build your own at realfunai.com`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      window.showToast("Receipt allocation copied to clipboard!");
+    }).catch(err => {
+      window.showToast("Failed to copy receipt. Please try again.", "error");
+    });
+  });
+
+  // Initial render
+  updateUI();
+</script>

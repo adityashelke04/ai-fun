@@ -1,0 +1,306 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Milestones list for parameter scale
+const models = [
+  { id: 'perceptron', name: '1957 Perceptron (Single Neuron)', count: 1, text: 'The initial foundational neural building block.' },
+  { id: 'lenet5', name: '1998 LeNet-5 (Digit Recognizer)', count: 60000, text: 'CNN used for reading bank checks.' },
+  { id: 'alexnet', name: '2012 AlexNet (ImageNet)', count: 60000000, text: 'The spark of the modern deep learning boom.' },
+  { id: 'bert', name: '2018 BERT-Large (NLP)', count: 340000000, text: 'Bidirectional encoder that revolutionized search.' },
+  { id: 'gpt2', name: '2019 GPT-2 (Text Gen)', count: 1500000000, text: 'Deemed too dangerous to release by OpenAI at the time.' },
+  { id: 'llama2', name: '2023 LLaMA-2 70B (Open Weights)', count: 70000000000, text: 'Meta\'s powerful open model for researchers.' },
+  { id: 'llama3', name: '2024 LLaMA-3 405B (Llama flagship)', count: 405000000000, text: 'The state-of-the-art open weights baseline.' },
+  { id: 'gpt4', name: '2023 GPT-4 (Estimated)', count: 1800000000000, text: 'Massive mixture-of-experts model.' },
+  { id: 'brain', name: 'Human Brain (Synapses count)', count: 100000000000000, text: 'Average count of connection junctions in biological brains.' }
+];
+---
+
+<Layout title="The Scale of AI — Real Fun AI">
+  
+  <!-- Experience Header -->
+  <section class="border-b border-hairline bg-canvas-soft py-12 px-6 md:px-12">
+    <div class="max-w-4xl mx-auto flex flex-col gap-4">
+      <span class="text-caption-mono text-accent uppercase tracking-wider">Playground // SYSTEM_SCALE</span>
+      <h1 class="text-display-lg text-ink font-semibold tracking-[-1.28px]">
+        The Scale of AI
+      </h1>
+      <p class="text-body text-body-md max-w-2xl">
+        Compare parameter counts of historical models and biological brains. Use the visual comparison below to see the exponential growth.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Comparison Workspace -->
+  <section class="max-w-7xl mx-auto py-16 px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    
+    <!-- Left Panel: Selector & Stats -->
+    <div class="lg:col-span-4 flex flex-col gap-6">
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col gap-6">
+        <h3 class="text-caption-mono text-mute uppercase tracking-wider">Parameter Comparison</h3>
+        
+        <!-- Dropdown selectors -->
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1.5">
+            <label class="text-caption-mono text-body" for="model-a-select">Model A (Reference)</label>
+            <select 
+              id="model-a-select"
+              class="w-full bg-canvas-soft border border-hairline rounded-sm h-10 px-3 text-body-sm text-ink focus:outline-none focus:border-accent"
+            >
+              {models.map((m) => (
+                <option value={m.id} selected={m.id === 'alexnet'}>{m.name}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div class="flex flex-col gap-1.5">
+            <label class="text-caption-mono text-body" for="model-b-select">Model B (Comparison)</label>
+            <select 
+              id="model-b-select"
+              class="w-full bg-canvas-soft border border-hairline rounded-sm h-10 px-3 text-body-sm text-ink focus:outline-none focus:border-accent"
+            >
+              {models.map((m) => (
+                <option value={m.id} selected={m.id === 'gpt2'}>{m.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <!-- Comparative statistics -->
+        <div class="border-t border-hairline pt-6 flex flex-col gap-4">
+          <div class="flex flex-col">
+            <span class="text-caption-mono text-mute uppercase">ratio difference</span>
+            <span class="text-counter text-accent font-semibold" id="scale-ratio">1x</span>
+          </div>
+          
+          <p class="text-body text-body-sm" id="scale-explanation">
+            Loading comparison details...
+          </p>
+        </div>
+
+      </div>
+
+      <!-- General milestones list (Quick Info) -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 flex flex-col gap-4">
+        <h3 class="text-caption-mono text-mute uppercase tracking-wider">Quick Details</h3>
+        <div class="flex flex-col gap-4" id="details-container">
+          <!-- Dynamic details based on selection -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: Visual Display (Grid or Log Chart) -->
+    <div class="lg:col-span-8 flex flex-col gap-6">
+      
+      <!-- Desktop Only: Dynamic Dot Grid -->
+      <div class="hidden md:flex flex-col bg-canvas-card border border-hairline rounded-lg p-8 gap-6 h-full justify-between min-h-[500px]" id="desktop-visualizer">
+        <div class="flex flex-col gap-2">
+          <span class="text-caption-mono text-accent">DESKTOP VISUALIZER // DOT RATIO</span>
+          <h3 class="text-body-md-strong text-ink font-semibold">Visualizing Parameter Density</h3>
+          <p class="text-body text-body-sm">
+            Each dot in the container represents the parameters of <span class="text-ink font-semibold" id="dot-ref-name">Model A</span>.
+          </p>
+        </div>
+
+        <!-- Grid Container -->
+        <div class="flex-grow bg-game-surface border border-game-border rounded-lg p-6 flex items-center justify-center relative overflow-hidden min-h-[300px]">
+          <!-- Grid wrapper -->
+          <div id="dot-grid" class="grid gap-1.5 max-h-[340px] overflow-y-auto justify-center content-center max-w-full p-2">
+            <!-- Filled dynamically with dots -->
+          </div>
+          
+          <!-- Large overlay badge for high ratios -->
+          <div id="overflow-badge" class="hidden absolute bottom-4 right-4 bg-canvas-raised border border-accent/20 px-3 py-1.5 rounded-sm text-caption-mono text-accent z-20">
+            + 0 dots overflow
+          </div>
+        </div>
+
+        <div class="text-caption text-mute text-center">
+          Interactive dot mapping cap at 2,000 dots to preserve performance.
+        </div>
+      </div>
+
+      <!-- Mobile & Fallback: Logarithmic Bar Chart -->
+      <div class="bg-canvas-card border border-hairline rounded-lg p-6 md:p-8 flex flex-col gap-6" id="log-chart-card">
+        <div class="flex flex-col gap-1.5">
+          <span class="text-caption-mono text-accent">MOBILE & LOGARITHMIC SCALE</span>
+          <h3 class="text-body-md-strong text-ink font-semibold">Logarithmic parameter distribution</h3>
+          <p class="text-body text-body-sm">
+            Since parameters scale exponentially, visualising them on a linear bar chart is impossible. Below is a logarithmic bar chart base 10 (`log10` of parameters).
+          </p>
+        </div>
+
+        <!-- Bars list -->
+        <div class="flex flex-col gap-4 mt-2">
+          {models.map((m) => {
+            // log10 calculations
+            const logValue = Math.log10(m.count);
+            // normalise against brain (14)
+            const percent = Math.max(2, (logValue / 14) * 100);
+            return (
+              <div class="flex flex-col gap-1">
+                <div class="flex justify-between items-center text-caption-mono">
+                  <span class="text-ink font-medium">{m.name}</span>
+                  <span class="text-accent">{m.count.toLocaleString()}</span>
+                </div>
+                <div class="w-full bg-canvas-soft border border-hairline rounded-full h-4 overflow-hidden relative group">
+                  <div 
+                    class="bg-accent h-full transition-all duration-500 rounded-full scale-x-100 origin-left relative"
+                    style={`width: ${percent}%;`}
+                    data-bar-model={m.id}
+                  >
+                    <!-- Pulse overlay -->
+                    <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</Layout>
+
+<script is:inline define:vars={{ models }}>
+  // DOM Elements
+  const modelASelect = document.getElementById('model-a-select');
+  const modelBSelect = document.getElementById('model-b-select');
+  const scaleRatio = document.getElementById('scale-ratio');
+  const scaleExplanation = document.getElementById('scale-explanation');
+  const dotRefName = document.getElementById('dot-ref-name');
+  const dotGrid = document.getElementById('dot-grid');
+  const overflowBadge = document.getElementById('overflow-badge');
+  const detailsContainer = document.getElementById('details-container');
+
+  // Triggered on page changes
+  function updateComparison() {
+    const idA = modelASelect.value;
+    const idB = modelBSelect.value;
+
+    const modelA = models.find(m => m.id === idA);
+    const modelB = models.find(m => m.id === idB);
+
+    if (!modelA || !modelB) return;
+
+    // Calc ratio
+    const ratio = modelB.count / modelA.count;
+    
+    // Formatting ratio display
+    if (ratio >= 1) {
+      scaleRatio.textContent = `${ratio.toLocaleString(undefined, { maximumFractionDigits: 1 })}x`;
+    } else {
+      const inverse = 1 / ratio;
+      scaleRatio.textContent = `1 / ${inverse.toLocaleString(undefined, { maximumFractionDigits: 1 })}x`;
+    }
+
+    // Build explanatory text
+    dotRefName.textContent = modelA.name;
+    
+    let explanation = "";
+    if (ratio === 1) {
+      explanation = `Both models have the exact same size of ${modelA.count.toLocaleString()} parameters.`;
+    } else if (ratio > 1) {
+      explanation = `${modelB.name} has ${modelB.count.toLocaleString()} parameters, which is **${ratio.toLocaleString(undefined, { maximumFractionDigits: 0 })} times larger** than ${modelA.name} (${modelA.count.toLocaleString()} parameters).`;
+      
+      // Dynamic fun text analogy
+      if (ratio > 100000000) {
+        explanation += ` If ${modelA.name} was a grain of sand, ${modelB.name} would be a massive desert.`;
+      } else if (ratio > 100000) {
+        explanation += ` If ${modelA.name} was a single drop of water, ${modelB.name} would fill an entire swimming pool.`;
+      } else if (ratio > 100) {
+        explanation += ` If ${modelA.name} was a single step, ${modelB.name} would be the height of a skyscraper.`;
+      }
+    } else {
+      const invRatio = 1 / ratio;
+      explanation = `${modelB.name} has ${modelB.count.toLocaleString()} parameters, which is **${invRatio.toLocaleString(undefined, { maximumFractionDigits: 0 })} times smaller** than ${modelA.name} (${modelA.count.toLocaleString()} parameters).`;
+    }
+    
+    scaleExplanation.innerHTML = explanation;
+
+    // Update details side bar
+    detailsContainer.innerHTML = `
+      <div class="flex flex-col gap-1 border-b border-hairline/40 pb-2">
+        <span class="text-caption text-mute uppercase font-mono">Reference Details</span>
+        <span class="text-body-sm-strong font-semibold text-ink">${modelA.name}</span>
+        <span class="text-body-sm text-body">${modelA.text}</span>
+      </div>
+      <div class="flex flex-col gap-1 pt-2">
+        <span class="text-caption text-mute uppercase font-mono">Comparison Details</span>
+        <span class="text-body-sm-strong font-semibold text-ink">${modelB.name}</span>
+        <span class="text-body-sm text-body">${modelB.text}</span>
+      </div>
+    `;
+
+    // Highlight bars in Log Chart
+    document.querySelectorAll('[data-bar-model]').forEach(bar => {
+      const bId = bar.getAttribute('data-bar-model');
+      if (bId === idA) {
+        bar.className = 'bg-accent/40 h-full transition-all duration-500 rounded-full border-r-4 border-accent';
+      } else if (bId === idB) {
+        bar.className = 'bg-accent h-full transition-all duration-500 rounded-full shadow-[0_0_12px_rgba(0,255,136,0.4)]';
+      } else {
+        bar.className = 'bg-accent/20 h-full transition-all duration-500 rounded-full';
+      }
+    });
+
+    // Render dot grid for desktop (up to 2000 dots limit)
+    renderDotGrid(ratio);
+  }
+
+  // Draw dot representation on screen
+  function renderDotGrid(ratio) {
+    dotGrid.innerHTML = '';
+    
+    if (ratio <= 0) {
+      overflowBadge.classList.add('hidden');
+      return;
+    }
+
+    // Limit grid drawing to prevent browser thread locks
+    const limit = 2000;
+    const drawCount = Math.min(limit, Math.max(1, Math.round(ratio)));
+
+    // Choose columns dynamically to look clean
+    let cols = 10;
+    if (drawCount > 1000) cols = 50;
+    else if (drawCount > 500) cols = 40;
+    else if (drawCount > 100) cols = 25;
+    else if (drawCount > 50) cols = 15;
+    else cols = 10;
+
+    dotGrid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+
+    // Draw reference dot
+    const refDot = document.createElement('div');
+    refDot.className = 'w-2.5 h-2.5 rounded-full bg-violet animate-pulse';
+    refDot.title = 'Model A Reference Parameter Dot';
+    dotGrid.appendChild(refDot);
+
+    // Draw comparison dots
+    for (let i = 0; i < drawCount; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'w-2 h-2 rounded-full bg-accent';
+      dot.title = `Parameter Scale Block #${i+1}`;
+      dotGrid.appendChild(dot);
+    }
+
+    // Overflow label
+    if (ratio > limit) {
+      const overflow = Math.round(ratio - limit);
+      overflowBadge.textContent = `+ ${overflow.toLocaleString()} dots overflow`;
+      overflowBadge.classList.remove('hidden');
+    } else {
+      overflowBadge.classList.add('hidden');
+    }
+  }
+
+  // Listeners
+  modelASelect.addEventListener('change', updateComparison);
+  modelBSelect.addEventListener('change', updateComparison);
+
+  // Initial draw
+  updateComparison();
+</script>

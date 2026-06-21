@@ -1,0 +1,208 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "Real Fun AI — Interactive AI Facts & Experiences", 
+  description = "Explore mind-blowing AI statistics, prompt injection games, scale comparisons, and timeline predictions." 
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://realfunai.com" />
+  </head>
+  <body class="bg-canvas text-ink antialiased min-h-screen flex flex-col">
+    
+    <!-- Sticky Nav -->
+    <header class="sticky top-0 z-50 h-16 bg-canvas/80 backdrop-blur-md border-b border-hairline flex items-center justify-between px-6 md:px-12">
+      <a href="/" class="flex items-center gap-2 group transition-transform duration-200 active:scale-95">
+        <span class="w-3 h-3 rounded-full bg-accent animate-pulse"></span>
+        <span class="font-display font-semibold tracking-[-0.96px] text-lg text-ink group-hover:text-accent transition-colors">
+          Real Fun AI
+        </span>
+      </a>
+      
+      <nav class="hidden md:flex items-center gap-2">
+        <a href="/experiences/spend-compute" class="text-body hover:text-ink text-body-sm-strong transition-colors px-3 py-1.5 rounded-full hover:bg-canvas-soft-2">
+          Spend Compute
+        </a>
+        <a href="/experiences/jailbreak" class="text-body hover:text-ink text-body-sm-strong transition-colors px-3 py-1.5 rounded-full hover:bg-canvas-soft-2">
+          Jailbreak
+        </a>
+        <a href="/experiences/scale" class="text-body hover:text-ink text-body-sm-strong transition-colors px-3 py-1.5 rounded-full hover:bg-canvas-soft-2">
+          The Scale
+        </a>
+        <a href="/experiences/timeline" class="text-body hover:text-ink text-body-sm-strong transition-colors px-3 py-1.5 rounded-full hover:bg-canvas-soft-2">
+          Timeline
+        </a>
+      </nav>
+      
+      <div>
+        <a 
+          href="/#explore" 
+          class="h-8 inline-flex items-center bg-accent text-on-primary text-body-sm-strong rounded-sm px-4 hover:bg-accent-deep active:scale-95 transition-all"
+        >
+          Explore
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4"></div>
+
+    <!-- Footer -->
+    <footer class="bg-canvas border-t border-hairline py-16 px-6 md:px-12">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+        
+        <!-- Branding / Links -->
+        <div class="col-span-1 md:col-span-4 flex flex-col gap-4">
+          <div class="flex items-center gap-2">
+            <span class="w-3.5 h-3.5 rounded-full bg-accent"></span>
+            <span class="font-display font-semibold tracking-[-0.96px] text-xl text-ink">
+              Real Fun AI
+            </span>
+          </div>
+          <p class="text-body text-body-sm max-w-xs">
+            Interactive visualisations, games, and rankings exploring the speed, cost, and timeline of artificial intelligence.
+          </p>
+          <div class="flex gap-4 mt-2">
+            <a href="https://twitter.com" target="_blank" class="text-mute hover:text-accent text-body-sm transition-colors">Twitter</a>
+            <a href="https://github.com" target="_blank" class="text-mute hover:text-accent text-body-sm transition-colors">GitHub</a>
+            <a href="#" class="text-mute hover:text-accent text-body-sm transition-colors">Privacy Policy</a>
+          </div>
+        </div>
+
+        <!-- Sitemap links -->
+        <div class="col-span-1 md:col-span-4 flex flex-col gap-3">
+          <h3 class="text-ink text-body-sm-strong tracking-[-0.28px] font-semibold uppercase">Experiences</h3>
+          <ul class="flex flex-col gap-2">
+            <li>
+              <a href="/experiences/spend-compute" class="text-body hover:text-accent text-body-sm transition-colors">
+                Spend AI's Compute Budget
+              </a>
+            </li>
+            <li>
+              <a href="/experiences/jailbreak" class="text-body hover:text-accent text-body-sm transition-colors">
+                Jailbreak Sandbox Injection
+              </a>
+            </li>
+            <li>
+              <a href="/experiences/scale" class="text-body hover:text-accent text-body-sm transition-colors">
+                The Scale of AI (Parameters)
+              </a>
+            </li>
+            <li>
+              <a href="/experiences/timeline" class="text-body hover:text-accent text-body-sm transition-colors">
+                Predict the AI Timeline
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Newsletter form simulation -->
+        <div class="col-span-1 md:col-span-4 flex flex-col gap-3">
+          <h3 class="text-ink text-body-sm-strong tracking-[-0.28px] font-semibold uppercase">Get Updates</h3>
+          <p class="text-body text-body-sm">
+            Sign up for simulated updates on the latest mind-blowing AI breakthroughs.
+          </p>
+          <form id="newsletter-form" class="flex gap-2 mt-1">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              required
+              class="flex-grow bg-canvas-soft border border-hairline rounded-sm px-3 h-10 text-body-sm text-ink placeholder:text-mute focus:outline-none focus:border-accent transition-colors"
+            />
+            <button 
+              type="submit" 
+              class="bg-accent text-on-primary font-semibold text-body-sm rounded-sm px-4 h-10 hover:bg-accent-deep active:scale-95 transition-all"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-hairline flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-mute text-caption">
+          &copy; {new Date().getFullYear()} Real Fun AI. All rights reserved. Not affiliated with neal.fun.
+        </p>
+        <p class="text-mute text-caption-mono">
+          STATUS: COMPUTE ONLINE // TOKENS GENERATING
+        </p>
+      </div>
+    </footer>
+
+    <!-- Global Toast Script -->
+    <script is:inline>
+      window.showToast = function(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `flex items-center justify-between p-4 bg-canvas-raised border rounded-md shadow-lg pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300 ${
+          type === 'error' ? 'border-error text-error' : 'border-accent text-accent'
+        }`;
+        
+        toast.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <span class="w-2 h-2 rounded-full ${type === 'error' ? 'bg-error' : 'bg-accent'}"></span>
+            <span class="font-sans text-body-sm text-ink font-medium">${message}</span>
+          </div>
+          <button class="ml-4 text-mute hover:text-ink text-body-sm cursor-pointer" onclick="this.parentElement.remove()">✕</button>
+        `;
+
+        container.appendChild(toast);
+
+        // Animation in
+        setTimeout(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+
+        // Auto remove
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-[-8px]');
+          setTimeout(() => {
+            toast.remove();
+          }, 300);
+        }, 4000);
+      };
+
+      // Handle newsletter submit
+      document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = this.querySelector('input[type="email"]');
+        if (input) {
+          const email = input.value.trim();
+          if (email) {
+            window.showToast("Subscribed! (Simulation)", "success");
+            input.value = "";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

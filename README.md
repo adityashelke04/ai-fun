@@ -1,13 +1,46 @@
-# ai-fun
+# Astro Starter Kit: Basics
 
-A public repository for fun AI experiments and projects, built following the design patterns outlined in [DESIGN.md](DESIGN.md) (inspired by Vercel's clean and modern design language).
+```sh
+npm create astro@latest -- --template basics
+```
 
-## 🚀 Projects
-- *(Coming Soon)*
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## 🎨 Design System
-This repository is configured to use a Vercel-inspired design aesthetic, focusing on:
-- Stark black-and-ink elements on near-white canvases
-- Vibrant mesh gradients for decorative elements
-- Clean geometric typography
-- Micro-animations and premium layout systems
+## 🚀 Project Structure
+
+Inside of your Astro project, you'll see the following folders and files:
+
+```text
+/
+├── public/
+│   └── favicon.svg
+├── src
+│   ├── assets
+│   │   └── astro.svg
+│   ├── components
+│   │   └── Welcome.astro
+│   ├── layouts
+│   │   └── Layout.astro
+│   └── pages
+│       └── index.astro
+└── package.json
+```
+
+To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
